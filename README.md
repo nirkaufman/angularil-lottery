@@ -1,5 +1,5 @@
 # Angular-IL Meetup Lottery App
-Simple but effective app that we use during our Angular-IL meetup sessions.
+Simple but effective app for Angular-IL meetup raffles.
 
 ## PR's
 Feel free to submit pull requests and help us improve this widget!
