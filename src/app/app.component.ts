@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'ngil-root',
   template: `
-  <h1>
-    {{title}}
-  </h1>
+    <md-toolbar color="primary">
+      <span>ANGULAR-IL | LOTTERY </span>
+    </md-toolbar>
+
+    <ngil-text></ngil-text>
   `,
-  styles: []
+
 })
 export class AppComponent {
-  title = 'ngil works!';
+
 }
