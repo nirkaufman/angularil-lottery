@@ -15,6 +15,8 @@ import {DataService} from './data.service';
     <ngil-buttons *ngIf="!running"
                   (start)="start()"
                   (init)="init()"></ngil-buttons>
+    <h1>Winners</h1>
+    <p *ngFor="let winner of winners">{{ winner }}</p>
   `,
 })
 export class TextComponent {
@@ -30,9 +32,11 @@ export class TextComponent {
   private timer: any;
   private currentIteration: any;
   private names: string[];
+  private winners: string[];
 
-  constructor(dataService: DataService) {
+  constructor(private dataService: DataService) {
     this.names = dataService.names;
+    this.winners = dataService.winners;
     this.init();
   }
 
@@ -57,6 +61,7 @@ export class TextComponent {
     if (newText === this.selected) {
       clearInterval(this.timer);
       this.running = false;
+      this.dataService.addWinner(this.selected);
     }
     this.name    = newText;
   }
