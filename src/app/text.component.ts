@@ -49,25 +49,25 @@ export class TextComponent {
     this.timer   = setInterval(this.decode.bind(this), this.speed);
   }
 
+
   private decode() {
-    let newText = this.covered.split('').map(this.changeLetter().bind(this)).join('');
+    let newText = this.name.split('').map(this.changeLetter().bind(this)).join('');
     newText     =  this.currentIteration++ >= this.maxIterations ? this.selected : newText;
 
     if (newText === this.selected) {
-      this.name = newText;
-      clearTimeout(this.timer);
+      clearInterval(this.timer);
       this.running = false;
-      return false;
     }
-    this.covered = newText;
     this.name    = newText;
   }
 
   private changeLetter() {
-    const replacements    = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_ אבגדהוזחטיכךלמםנןסעפףצץקרשת';
+    const replacements    = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_';
     const replacementsLen = replacements.length;
-    return function (letter, index) {
-      if (this.selected[index] === letter) {
+    return (letter, index) => {
+      if (this.selected[index] === ' ') {
+        return ' ';
+      } else if (this.selected[index] === letter && this.currentIteration > 50) {
         return letter;
       } else {
         return replacements[Math.random() * replacementsLen | 0];
