@@ -25,6 +25,8 @@ export class TextComponent {
   private selected: string;
   private covered: string | any | void;
   private timer: any;
+  private maxIniterations: any;
+  private currentIniteration: any;
   private names: string[];
 
   constructor(dataService: DataService) {
@@ -33,6 +35,8 @@ export class TextComponent {
   }
 
   public init() {
+    this.maxIniterations = 300;
+    this.currentIniteration = 0;
     this.running  = false;
     this.selected = this.names[Math.random() * this.names.length | 0].toUpperCase();
     this.covered  = this.selected.replace(/[^\s]/g, '_');
@@ -44,9 +48,18 @@ export class TextComponent {
     this.timer   = setInterval(this.decode.bind(this), 50);
   }
 
+  checkIniteration(newText) {
+    this.currentIniteration++;
+    if (this.currentIniteration > this.maxIniterations) {
+      return this.selected;
+    }
+    return newText;
+  }
+
   decode() {
-    const newText = this.covered.split('').map(this.changeLetter().bind(this)).join('');
-    if (newText === this.covered) {
+    let newText = this.covered.split('').map(this.changeLetter().bind(this)).join('');
+    newText = this.checkIniteration(newText);
+    if (newText === this.selected) {
       this.name = newText;
       clearTimeout(this.timer);
       this.running = false;
