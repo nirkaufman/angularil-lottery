@@ -5,6 +5,7 @@ Simple but effective app for Angular-IL meetup raffles.
 Feel free to submit pull requests and help us improve this widget!
    
 ## Development
+- Run `npm install -g @angular/cli`
 - Run `yarn`
 - Run `ng serve` for a dev server. 
 - Navigate to `http://localhost:4200/`. 
