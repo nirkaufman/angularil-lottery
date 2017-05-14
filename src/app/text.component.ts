@@ -32,14 +32,16 @@ export class TextComponent {
   private names: string[];
 
   constructor(dataService: DataService) {
-    this.names = dataService.names;
-    this.init();
+    dataService.names.subscribe( result => {
+      this.names = result.json();
+      this.init();
+    });
   }
 
   public init() {
     this.currentIteration = 0;
     this.running          = false;
-    this.selected         = this.names[Math.random() * this.names.length | 0].toUpperCase();
+    this.selected         = this.names[Math.random() * this.names.length | 0]['name'].toUpperCase();
     this.covered          = this.selected.replace(/[^\s]/g, '_');
     this.name             = this.covered;
   }

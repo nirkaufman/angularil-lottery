@@ -8,6 +8,7 @@ Feel free to submit pull requests and help us improve this widget!
 - Run `npm install -g @angular/cli`
 - Run `yarn`
 - Run `ng serve` for a dev server. 
+- Run `npm run db` for the api
 - Navigate to `http://localhost:4200/`. 
 
 ## Build
