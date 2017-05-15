@@ -44,12 +44,17 @@ export class TextComponent {
   private winners: string[];
 
   constructor(private dataService: DataService) {
-    this.names = dataService.names;
-    this.winners = dataService.winners;
-    this.init();
+    dataService.names.subscribe( result => {
+      this.names = result.json();
+      this.init();
+    });
   }
 
   get nameArr() {
+    if (!this.name) {
+      return [];
+    }
+
     const splitName = this.name.split('');
 
     return hebrewLetters.includes(this.selected[0]) ? splitName.reverse() : splitName;
@@ -58,7 +63,7 @@ export class TextComponent {
   public init() {
     this.currentIteration = 0;
     this.running          = false;
-    this.selected         = this.names[Math.random() * this.names.length | 0].toUpperCase();
+    this.selected         = this.names[Math.random() * this.names.length | 0]['name'].toUpperCase();
     this.covered          = this.selected.replace(/[^\s]/g, '_');
     this.name             = this.covered;
   }

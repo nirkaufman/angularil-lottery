@@ -1,28 +1,18 @@
 import {Injectable} from '@angular/core';
+import {Http} from "@angular/http";
 
 @Injectable()
 export class DataService {
   private _names: string[];
   private _winners: string[] = [];
+  private http: Http;
 
-  constructor() {
-    // todo: replace with real data source
-    this._names = [
-      'Armando Plante',
-      'Yuko Chronister',
-      'Kassandra Mungia',
-      'Rosario Corey',
-      'Derek Peri',
-      'Darwin Massie',
-      'Almeda Binder',
-      'Toby Barter',
-      'Burl Edgemon',
-      'ניר קאופמן'
-    ];
+  constructor(http: Http) {
+    this.http = http;
   }
 
-  public get names(): string[] {
-    return this._names;
+  public get names() {
+    return this.http.get('http://localhost:3000/jspoland');
   }
 
   public get winners(): string[] {

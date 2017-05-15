@@ -18,6 +18,7 @@ import { ButtonsComponent } from './buttons.component';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     BrowserAnimationsModule,
     MdButtonModule,
     MdToolbarModule
