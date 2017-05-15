@@ -1,6 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {DataService} from './data.service';
 
+const hebrewLetters = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת';
+const replacements    = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_${hebrewLetters}`;
+
 @Component({
   selector: 'ngil-text',
   styles  : [`
@@ -8,9 +11,15 @@ import {DataService} from './data.service';
       font-family: Courier;
       letter-spacing: 9px;
       font-size: 60px;
+    }
+    .single-char {
+      display: inline-block;
+      width: 45px;
+      height: 73px;
+      vertical-align: bottom;
     }`],
   template: `
-    <p>{{ name }}</p>
+    <p><span class="single-char" *ngFor="let c of nameArr">{{ c }}</span></p>
 
     <ngil-buttons *ngIf="!running"
                   (start)="start()"
@@ -40,6 +49,12 @@ export class TextComponent {
     this.init();
   }
 
+  get nameArr() {
+    const splitName = this.name.split('');
+
+    return hebrewLetters.includes(this.selected[0]) ? splitName.reverse() : splitName;
+  }
+
   public init() {
     this.currentIteration = 0;
     this.running          = false;
@@ -67,7 +82,6 @@ export class TextComponent {
   }
 
   private changeLetter() {
-    const replacements    = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_';
     const replacementsLen = replacements.length;
     return (letter, index) => {
       if (this.selected[index] === ' ') {
