@@ -53,21 +53,14 @@ export class TextComponent {
   }
 
   private paddNames(shortNames) {
-    const longNames: any[] = [];
-    // calc max length for all names
 
-    let maxLength = 0;
-    shortNames.forEach((obj: any) => {
-      if (obj.name.length > maxLength) {
-        maxLength = obj.name.length;
-      }
-    });
+    // Get Max Length from all names
+    const maxLength = Math.max(...shortNames.map((obj) => obj.name.length));
 
     // padd all names to max length
-    shortNames.forEach((obj: any) => {
+    const longNames = shortNames.map((obj) => {
       const padding = (maxLength - obj.name.length) / 2;
-      const paddingName = ' '.repeat(padding) + obj.name + ' '.repeat(padding);
-      longNames.push({'name': paddingName});
+      return {name: ' '.repeat(padding) + obj.name + ' '.repeat(padding)};
     });
 
     return longNames;
