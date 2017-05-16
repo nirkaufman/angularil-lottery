@@ -39,16 +39,38 @@ export class TextComponent {
   }
 
   public init() {
+    this.names = this.paddNames(this.names);
     this.currentIteration = 0;
     this.running          = false;
     this.selected         = this.names[Math.random() * this.names.length | 0]['name'].toUpperCase();
-    this.covered          = this.selected.replace(/[^\s]/g, '_');
+    this.covered          = this.selected.replace(/([\s]|[\S])/g, '_');
     this.name             = this.covered;
   }
 
   public start() {
     this.running = true;
     this.timer   = setInterval(this.decode.bind(this), this.speed);
+  }
+
+  private paddNames(shortNames) {
+    const longNames: any[] = [];
+    // calc max length for all names
+
+    let maxLength = 0;
+    shortNames.forEach((obj: any) => {
+      if (obj.name.length > maxLength) {
+        maxLength = obj.name.length;
+      }
+    });
+
+    // padd all names to max length
+    shortNames.forEach((obj: any) => {
+      const padding = (maxLength - obj.name.length) / 2;
+      const paddingName = ' '.repeat(padding) + obj.name + ' '.repeat(padding);
+      longNames.push({'name': paddingName});
+    });
+
+    return longNames;
   }
 
   private decode() {
