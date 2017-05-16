@@ -17,9 +17,20 @@ const replacements    = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrst
       width: 45px;
       height: 73px;
       vertical-align: bottom;
-    }`],
+    }
+    .wow-effect{
+      animation: breathing 2s ease-out 1 normal;
+    }
+
+    @keyframes breathing {
+      0%   { transform: scale(0.9); }
+      25%  { transform: scale(1.2); }
+      60%  { transform: scale(0.9); }
+      100% { transform: scale(1.5); }
+    }
+  `],
   template: `
-    <p><span class="single-char" *ngFor="let c of nameArr">{{ c }}</span></p>
+    <p [ngClass]="{'wow-effect': wowEffect}"><span class="single-char" *ngFor="let c of nameArr">{{ c }}</span></p>
 
     <ngil-buttons *ngIf="!running"
                   (start)="start()"
@@ -34,6 +45,7 @@ export class TextComponent {
   @Input() speed: number;
 
   public name: string;
+  public wowEffect: boolean;
 
   private running: boolean;
   private selected: string;
@@ -67,6 +79,7 @@ export class TextComponent {
     this.selected         = this.names[Math.random() * this.names.length | 0]['name'].toUpperCase();
     this.covered          = this.selected.replace(/([\s]|[\S])/g, '_');
     this.name             = this.covered;
+    this.wowEffect = false;
   }
 
   public start() {
@@ -96,6 +109,7 @@ export class TextComponent {
       clearInterval(this.timer);
       this.running = false;
       this.dataService.addWinner(this.selected);
+      this.wowEffect = true;
     }
     this.name    = newText;
   }
