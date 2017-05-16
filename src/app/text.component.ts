@@ -24,8 +24,6 @@ const replacements    = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrst
     <ngil-buttons *ngIf="!running"
                   (start)="start()"
                   (init)="init()"></ngil-buttons>
-    <h1>Winners</h1>
-    <p *ngFor="let winner of winners">{{ winner }}</p>
   `,
 })
 export class TextComponent {
@@ -41,7 +39,6 @@ export class TextComponent {
   private timer: any;
   private currentIteration: any;
   private names: string[];
-  private winners: string[];
 
   constructor(private dataService: DataService) {
     dataService.names.subscribe( result => {

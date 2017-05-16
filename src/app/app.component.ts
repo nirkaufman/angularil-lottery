@@ -8,7 +8,7 @@ import {Component} from '@angular/core';
     </md-toolbar>
 
     <ngil-text [maxIterations]="250"
-               [speed]="17"></ngil-text>
+               [speed]="75"></ngil-text>
   `,
 
 })
