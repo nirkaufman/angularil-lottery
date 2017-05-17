@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {DataService} from './data.service';
 
 const hebrewLetters = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת';
-const replacements    = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_${hebrewLetters}`;
+const replacements  = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_${hebrewLetters}`;
 
 @Component({
   selector: 'ngil-text',
@@ -12,25 +12,17 @@ const replacements    = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrst
       letter-spacing: 9px;
       font-size: 60px;
     }
+
     .single-char {
       display: inline-block;
       width: 45px;
       height: 73px;
       vertical-align: bottom;
     }
-    .wow-effect{
-      animation: breathing 2s ease-out 1 normal;
-    }
-
-    @keyframes breathing {
-      0%   { transform: scale(0.9); }
-      25%  { transform: scale(1.2); }
-      60%  { transform: scale(0.9); }
-      100% { transform: scale(1.5); }
-    }
   `],
   template: `
-    <p [ngClass]="{'wow-effect': wowEffect}"><span class="single-char" *ngFor="let c of nameArr">{{ c }}</span></p>
+    <p><span class="single-char"
+             *ngFor="let c of nameArr">{{ c }}</span></p>
 
     <ngil-buttons *ngIf="!running"
                   (start)="start()"
@@ -52,8 +44,11 @@ export class TextComponent {
   private currentIteration: any;
   private names: string[];
 
+  private round: number;
+
   constructor(private dataService: DataService) {
-    dataService.names.subscribe( result => {
+    this.round = 0;
+    dataService.names.subscribe(result => {
       this.names = result.json();
       this.init();
     });
@@ -65,12 +60,10 @@ export class TextComponent {
     }
 
     const splitName = this.name.split('');
-
     return hebrewLetters.includes(this.selected[0]) ? splitName.reverse() : splitName;
   }
 
   public init() {
-    this.names = this.paddNames(this.names);
     this.currentIteration = 0;
     this.running          = false;
     this.selected         = this.names[Math.random() * this.names.length | 0]['name'].toUpperCase();
@@ -82,33 +75,19 @@ export class TextComponent {
   public start() {
     this.running = true;
     this.timer   = setInterval(this.decode.bind(this), this.speed);
-  }
-
-  private paddNames(shortNames) {
-
-    // Get Max Length from all names
-    const maxLength = Math.max(...shortNames.map((obj) => obj.name.length));
-
-    // padd all names to max length
-    const longNames = shortNames.map((obj) => {
-      const padding = (maxLength - obj.name.length) / 2;
-      return {name: ' '.repeat(padding) + obj.name + ' '.repeat(padding)};
-    });
-
-    return longNames;
+    this.round++;
   }
 
   private decode() {
     let newText = this.name.split('').map(this.changeLetter().bind(this)).join('');
-    newText     =  this.currentIteration++ >= this.maxIterations ? this.selected : newText;
+    newText     = this.currentIteration++ >= this.maxIterations ? this.selected : newText;
 
     if (newText === this.selected) {
       clearInterval(this.timer);
       this.running = false;
       this.dataService.addWinner(this.selected);
-      this.wowEffect = true;
     }
-    this.name    = newText;
+    this.name = newText;
   }
 
   private changeLetter() {
