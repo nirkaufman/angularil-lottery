@@ -9,6 +9,7 @@ import { TextComponent } from './text.component';
 import {MdButtonModule, MdToolbarModule} from "@angular/material";
 import {DataService} from "./data.service";
 import { ButtonsComponent } from './buttons.component';
+import {DrumsService} from './drums.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { ButtonsComponent } from './buttons.component';
     MdButtonModule,
     MdToolbarModule
   ],
-  providers: [DataService],
+  providers: [DataService, DrumsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

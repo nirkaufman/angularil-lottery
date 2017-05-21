@@ -7,7 +7,7 @@ import {Component} from '@angular/core';
       <span>ANGULAR-IL | LOTTERY </span>
     </md-toolbar>
 
-    <ngil-text [maxIterations]="250"
+    <ngil-text [maxIterations]="150"
                [speed]="75"></ngil-text>
   `,
 

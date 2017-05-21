@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {DataService} from './data.service';
+import {DrumsService} from "./drums.service";
 
 const hebrewLetters = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת';
 const replacements  = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_${hebrewLetters}`;
@@ -43,10 +44,11 @@ export class TextComponent {
   private timer: any;
   private currentIteration: any;
   private names: string[];
+  private lastRevealIteration: number;
 
   private round: number;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private drumsService: DrumsService) {
     this.round = 0;
     dataService.names.subscribe(result => {
       this.names = result.json();
@@ -73,12 +75,17 @@ export class TextComponent {
 
     this.covered          = this.selected.replace(/([\s]|[\S])/g, '_');
     this.name             = this.covered;
+    
+    this.lastRevealIteration = this.maxIterations;
   }
 
   public start() {
     this.running = true;
     this.timer   = setInterval(this.decode.bind(this), this.speed);
     this.round++;
+    if (this.name !== this.selected) {
+      this.drumsService.startDrums();
+    }
   }
 
   private decode() {
@@ -89,6 +96,7 @@ export class TextComponent {
       clearInterval(this.timer);
       this.running = false;
       this.dataService.addWinner(this.selected);
+      this.drumsService.endDrums();
     }
     this.name = newText;
   }
@@ -101,7 +109,14 @@ export class TextComponent {
       } else if (this.selected[index] === letter && this.currentIteration > 50) {
         return letter;
       } else {
-        return replacements[Math.random() * replacementsLen | 0];
+        let newLetter = replacements[Math.random() * replacementsLen | 0];
+        if (this.currentIteration - this.lastRevealIteration > (this.maxIterations / this.selected.length)) {
+          newLetter = this.selected[index];
+        }
+        if (newLetter === this.selected[index] && this.currentIteration >= 50) {
+          this.lastRevealIteration = this.currentIteration;
+        }
+        return newLetter;
       }
     };
   }
