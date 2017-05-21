@@ -70,12 +70,12 @@ export class TextComponent {
     this.running          = false;
 
     // generate random number and use it to select a winner
-    const randomNumber    = Math.random() * this.names.length | 0;
-    this.selected         = this.names[randomNumber]['name'].toUpperCase();
+    const randomNumber = Math.random() * this.names.length | 0;
+    this.selected      = this.names[randomNumber]['name'].toUpperCase();
 
-    this.covered          = this.selected.replace(/([\s]|[\S])/g, '_');
-    this.name             = this.covered;
-    
+    this.covered = this.selected.replace(/([\s]|[\S])/g, '_');
+    this.name    = this.covered;
+
     this.lastRevealIteration = this.maxIterations;
   }
 
