@@ -66,10 +66,13 @@ export class TextComponent {
   public init() {
     this.currentIteration = 0;
     this.running          = false;
-    this.selected         = this.names[Math.random() * this.names.length | 0]['name'].toUpperCase();
+
+    // generate random number and use it to select a winner
+    const randomNumber    = Math.random() * this.names.length | 0;
+    this.selected         = this.names[randomNumber]['name'].toUpperCase();
+
     this.covered          = this.selected.replace(/([\s]|[\S])/g, '_');
     this.name             = this.covered;
-    this.wowEffect = false;
   }
 
   public start() {
